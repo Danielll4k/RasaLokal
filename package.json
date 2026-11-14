@@ -1,0 +1,24 @@
+{
+  "name": "rasalokal",
+  "version": "1.0.0",
+  "description": "Platform Ulasan Restoran Berbasis Verifikasi Pembelian dan Voucher untuk Pemberdayaan UMKM Kuliner Indonesia",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev --workspace=client\"",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "build": "npm run build --workspace=client",
+    "start": "npm run start --workspace=server",
+    "db:migrate": "npm run migrate --workspace=server",
+    "db:seed": "npm run seed --workspace=server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "author": "RacikCode Team (Universitas Muhammadiyah Yogyakarta)",
+  "license": "MIT"
+}
