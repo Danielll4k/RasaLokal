@@ -1,0 +1,13 @@
+{
+  "name": "rasalokal-infrastructure",
+  "version": "1.0.0",
+  "description": "RasaLokal Database Architecture and Infrastructure Deployment Services",
+  "private": true,
+  "scripts": {
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml down",
+    "docker:logs": "docker compose -f docker/docker-compose.yml logs -f"
+  },
+  "author": "Heyden Alya Syailendra",
+  "license": "MIT"
+}
