@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: rasalokal_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-rasalokal_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-rasalokal_secret_password}
+      POSTGRES_DB: ${DB_NAME:-rasalokal_db}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../database/migrations/001_initial_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ../database/seeds/001_demo_seed.sql:/docker-entrypoint-initdb.d/02_seed.sql
+    networks:
+      - rasalokal_net
+
+  adminer:
+    image: adminer:latest
+    container_name: rasalokal_adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - rasalokal_net
+
+networks:
+  rasalokal_net:
+    driver: bridge
+
+volumes:
+  pgdata:
