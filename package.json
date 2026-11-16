@@ -14,7 +14,10 @@
     "build": "npm run build --workspace=client",
     "start": "npm run start --workspace=server",
     "db:migrate": "npm run migrate --workspace=server",
-    "db:seed": "npm run seed --workspace=server"
+    "db:seed": "npm run seed --workspace=server",
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml down",
+    "docker:logs": "docker compose -f docker/docker-compose.yml logs -f"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
