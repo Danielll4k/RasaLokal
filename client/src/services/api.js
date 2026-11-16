@@ -1,5 +1,36 @@
 const API_BASE = '/api';
 
+export function getAuthToken() {
+  return localStorage.getItem('rasalokal_token') || '';
+}
+
+export function setAuthToken(token) {
+  if (token) localStorage.setItem('rasalokal_token', token);
+  else localStorage.removeItem('rasalokal_token');
+}
+
+function authHeaders() {
+  const token = getAuthToken();
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
+}
+
+export async function loginUser(emailOrRole) {
+  const payload = typeof emailOrRole === 'object' 
+    ? emailOrRole 
+    : (String(emailOrRole).includes('@') ? { email: emailOrRole } : { role: emailOrRole });
+  
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  if (data.success && data.data?.token) {
+    setAuthToken(data.data.token);
+  }
+  return data;
+}
+
 export async function fetchRestaurants(query = '', category = '') {
   try {
     const params = new URLSearchParams();
@@ -26,10 +57,21 @@ export async function fetchRestaurantById(id) {
   }
 }
 
+export async function fetchRestaurantReviews(restaurantId) {
+  try {
+    const res = await fetch(`${API_BASE}/reviews/${restaurantId}`);
+    const data = await res.json();
+    return data.success ? data.data : [];
+  } catch (err) {
+    console.error('Fetch reviews error:', err);
+    return [];
+  }
+}
+
 export async function verifyVoucherCode(code) {
   const res = await fetch(`${API_BASE}/vouchers/verify`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify({ code })
   });
   return res.json();
@@ -38,7 +80,7 @@ export async function verifyVoucherCode(code) {
 export async function submitReview(payload) {
   const res = await fetch(`${API_BASE}/reviews`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(payload)
   });
   return res.json();
@@ -46,7 +88,9 @@ export async function submitReview(payload) {
 
 export async function fetchMyDiscountVouchers() {
   try {
-    const res = await fetch(`${API_BASE}/vouchers/my-discounts`);
+    const res = await fetch(`${API_BASE}/vouchers/my-discounts`, {
+      headers: { ...authHeaders() }
+    });
     const data = await res.json();
     return data.success ? data.data : [];
   } catch (err) {
@@ -57,7 +101,7 @@ export async function fetchMyDiscountVouchers() {
 export async function issueCashierVoucher(payload) {
   const res = await fetch(`${API_BASE}/vouchers/issue`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(payload)
   });
   return res.json();
@@ -66,7 +110,7 @@ export async function issueCashierVoucher(payload) {
 export async function redeemCashierDiscount(payload) {
   const res = await fetch(`${API_BASE}/vouchers/redeem-discount`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(payload)
   });
   return res.json();
@@ -74,7 +118,9 @@ export async function redeemCashierDiscount(payload) {
 
 export async function fetchMerchantAnalytics() {
   try {
-    const res = await fetch(`${API_BASE}/merchant/stats`);
+    const res = await fetch(`${API_BASE}/merchant/stats`, {
+      headers: { ...authHeaders() }
+    });
     const data = await res.json();
     return data.success ? data.data : null;
   } catch (err) {
@@ -84,7 +130,9 @@ export async function fetchMerchantAnalytics() {
 
 export async function fetchUserProfile() {
   try {
-    const res = await fetch(`${API_BASE}/profile`);
+    const res = await fetch(`${API_BASE}/profile`, {
+      headers: { ...authHeaders() }
+    });
     const data = await res.json();
     return data.success ? data.data : null;
   } catch (err) {

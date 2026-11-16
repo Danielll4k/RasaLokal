@@ -3,23 +3,132 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply bg-[#FBFCFD] text-[#09090B] font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', sans-serif;
   }
 }
 
-/* Custom scrollbar */
+/* Liquid Glass / Translucent Glassmorphism with Rich Ambient Shadow */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 14px 32px -6px rgba(15, 23, 42, 0.10), 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+}
+
+.liquid-glass-dark {
+  background: rgba(15, 23, 42, 0.90);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 44px -8px rgba(0, 0, 0, 0.35), 0 6px 16px -3px rgba(0, 0, 0, 0.2);
+}
+
+/* Skeleton Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+/* Shake Animation for Fake/Invalid Scan */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* Subtle Scanner Laser Animation */
+@keyframes scanLaser {
+  0% { top: 10%; opacity: 0.3; }
+  50% { top: 85%; opacity: 1; }
+  100% { top: 10%; opacity: 0.3; }
+}
+
+.animate-scan-laser {
+  animation: scanLaser 2.2s ease-in-out infinite;
+}
+
+/* Interactive Button Micro-interactions */
+.btn-interactive {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-interactive:active {
+  transform: scale(0.96);
+}
+
+/* Card Hover Elevation */
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+}
+
+/* Authentic Perforated Receipt / Coupon Styling */
+.ticket-edge-left {
+  position: relative;
+}
+.ticket-edge-left::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-color: #FBFCFD;
+  border-radius: 9999px;
+  box-shadow: inset -2px 0 3px rgba(0,0,0,0.06);
+}
+
+.ticket-edge-right {
+  position: relative;
+}
+.ticket-edge-right::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-color: #FBFCFD;
+  border-radius: 9999px;
+  box-shadow: inset 2px 0 3px rgba(0,0,0,0.06);
+}
+
+/* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: #E2E8F0;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #CBD5E1;
 }

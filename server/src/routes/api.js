@@ -7,10 +7,13 @@ import {
   validateDiscountVoucher 
 } from '../controllers/voucherController.js';
 import { createReview, getReviewsByRestaurant } from '../controllers/reviewController.js';
-import { getProfile, getMerchantStats } from '../controllers/authController.js';
+import { getProfile, getMerchantStats, login } from '../controllers/authController.js';
 import { authenticate } from '../middlewares/auth.js';
 
 const router = Router();
+
+// Auth
+router.post('/auth/login', login);
 
 // Restaurants
 router.get('/restaurants', getRestaurants);
